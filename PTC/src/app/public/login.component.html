@@ -1,0 +1,23 @@
+<info-message></info-message>
+<exception-message></exception-message>
+<validation-message></validation-message>
+
+<div class="row">
+    <div class="col">
+        <label>{{securityObject | json}}</label>
+    </div>
+</div>
+
+<form>
+    <h3>Log in</h3>
+    <label>User Name</label>
+    <input id="userName" name="userName" [(ngModel)]="user.userName" autofocus="autofocus"/>
+    <label>Password</label>
+    <input id="password" name="password" [(ngModel)]="user.password" type="password"/>
+    <div>
+        <button (click)="login()">Login</button>
+    </div>
+
+
+
+</form>
