@@ -7,11 +7,18 @@ export class AppUserAuth extends UserAuthBase{
     canAccessSettings: boolean = false;
     canAddCategory: boolean = false;
     canAddProduct: boolean = false;
+    canEditProduct: boolean = false;
+    canDeleteProduct: boolean = false;
     canSaveProduct: boolean = false;
 
     init(): void{
         super.init();
 
         this.canAccessProducts = false;
+        this.canAccessCategories = false;
+        this.canAccessLogs = false;
+        this.canAccessSettings=false;
+        this.canAddProduct=false;
+        this.canEditProduct=false;
     }
 }

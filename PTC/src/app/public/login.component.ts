@@ -11,21 +11,25 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public user: AppUser = new AppUser();
-  public securityObject: AppUserAuth | undefined;
+  user: AppUser = new AppUser();
+  securityObject: AppUserAuth | undefined;
 
-  constructor(
-    private securityService: SecurityService,
-    private msgService: MessageService) { }
+  constructor(private securityService: SecurityService,
+    private msgService: MessageService) { 
 
-  ngOnInit(): void {
   }
 
-  public login(){
-    console.log('name password: ' + this.user.userName + ' ' + this.user.password);
+  ngOnInit(): void {  
+
+  }
+
+  login(){
+    //console.log('name password: ' + this.user.userName + ' ' + this.user.password);
+    
     this.msgService.clearAll();
     this.securityObject?.init();
-    this.securityService.login(this.user)
+    this.securityService
+      .login(this.user)
       .subscribe(resp => this.securityObject = resp);
   }
 
