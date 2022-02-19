@@ -21,4 +21,9 @@ export class AppUserAuth extends UserAuthBase{
         this.canAddProduct=false;
         this.canEditProduct=false;
     }
+
+    getValueOfProperty(obj: any, key: string): boolean{
+        let ret = obj[key];
+        return ret;
+    }
 }

@@ -10,6 +10,7 @@ import { NotSavedGuard } from './shared/guards/not-saved.guard';
 import { LogMaintenanceComponent } from './shared/logging/log-maintenance.component';
 import { ConfigurationComponent } from './shared/configuration/configuration.component';
 import { LoginComponent } from './public/login.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -26,25 +27,33 @@ const routes: Routes = [
   // },
   {
     path: 'categories',
-    component: CategoryListComponent
+    component: CategoryListComponent,
+    canActivate: [AuthGuard],
+    data: {claimType: 'canAccessCategories'}
   },
   {
     path: 'settings',
-    component: ConfigurationComponent
+    component: ConfigurationComponent,
+    canActivate: [AuthGuard],
+    data: {claimType: 'canAccessSettings'}
   },
   {
     path: 'logmaintenance',
-    component: LogMaintenanceComponent
+    component: LogMaintenanceComponent,
+    canActivate: [AuthGuard],
+    data: {claimType: 'canAccessLogs'}
   },
   {
     path: 'products',
-    component: ProductListComponent
+    component: ProductListComponent,
+    canActivate: [AuthGuard],
+    data: {claimType: 'canAccessProducts'}
   },
   {
     path: 'productDetail/:id',
-    canActivate: [ValidIdGuard],
+    canActivate: [ValidIdGuard, AuthGuard],
     canDeactivate: [NotSavedGuard],
-    data: { redirectTo: 'products' },
+    data: { redirectTo: 'products', claimType: 'canAccessProducts' },
     component: ProductDetailComponent
   },
   {
