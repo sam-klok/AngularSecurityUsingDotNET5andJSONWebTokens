@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PTCApi.EntityClasses;
 using PTCApi.Model;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PTCApi.Controllers {
   [Route("api/[controller]")]
@@ -20,6 +21,7 @@ namespace PTCApi.Controllers {
     private readonly ILogger<ProductController> _logger;
 
     [HttpGet]
+    [Authorize]
     public IActionResult Get() {
       IActionResult ret = null;
       List<Product> list = new List<Product>();

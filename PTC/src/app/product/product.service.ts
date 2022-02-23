@@ -108,6 +108,9 @@ export class ProductService {
         case 404:
           this.msgService.addExceptionMessage(msg);
           break;
+        case 401:
+          this.msgService.addExceptionMessage("401: Not authorized.");
+          break;          
         case 500:
           this.msgService.addExceptionMessage(error.error);
           break;
