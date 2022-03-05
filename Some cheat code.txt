@@ -1,0 +1,5 @@
+P@ssw0rd
+
+
+error: NU1202: Package Microsoft.AspNetCore.Authentication.JwtBearer 6.0.2 is not compatible with net5.0
+

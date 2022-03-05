@@ -7,6 +7,7 @@ import { Product } from './product';
 import { MessageService } from '../shared/messaging/message.service';
 import { ProductSearch } from './product-search';
 import { ConfigurationService } from '../shared/configuration/configuration.service';
+import { SecurityService } from '../shared/security/security.service';
 
 const API_ENDPOINT = "product/";
 
@@ -24,12 +25,16 @@ export class ProductService {
 
   constructor(private http: HttpClient,
     private msgService: MessageService,
-    private configService: ConfigurationService) {
+    private configService: ConfigurationService,
+    private securityService: SecurityService) {
     this.apiUrl = this.configService.settings.apiUrl + API_ENDPOINT;
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl).pipe(
+    let httpOptions = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + this.securityService.securityObject.bearerToken); // don't forget the ' ' space
+
+    return this.http.get<Product[]>(this.apiUrl, {headers: httpOptions}).pipe(
       catchError(
         this.handleError<Product[]>('getProducts',
           "Can't retrieve products.", []))
