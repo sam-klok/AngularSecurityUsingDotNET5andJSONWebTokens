@@ -33,6 +33,10 @@ namespace PTCApi {
 
       ConfigureJwt(services);
 
+      services.AddAuthorization(cfg => {
+        cfg.AddPolicy("CanAccessProducts", p=> p.RequireClaim("CanAccessProducts","true"));
+      });
+
       // Convert JSON from Camel Case to Pascal Case
       services.AddControllers().AddJsonOptions(
         options => {

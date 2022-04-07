@@ -21,7 +21,7 @@ namespace PTCApi.Controllers {
     private readonly ILogger<ProductController> _logger;
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Policy = "CanAccessProducts")]
     public IActionResult Get() {
       IActionResult ret = null;
       List<Product> list = new List<Product>();

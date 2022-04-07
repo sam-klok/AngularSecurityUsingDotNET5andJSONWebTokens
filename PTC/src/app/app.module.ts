@@ -16,6 +16,7 @@ import { ValidationMessageComponent } from './shared/messaging/validation-messag
 import { LogMaintenanceComponent } from './shared/logging/log-maintenance.component';
 import { ConfigurationComponent } from './shared/configuration/configuration.component';
 import { LoginComponent } from './public/login.component';
+import { httpInterceptorProviders } from './shared/http-interceptors/interceptor-providers';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { LoginComponent } from './public/login.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -25,20 +25,27 @@ export class ProductService {
 
   constructor(private http: HttpClient,
     private msgService: MessageService,
-    private configService: ConfigurationService,
-    private securityService: SecurityService) {
+    private configService: ConfigurationService)
+    //private securityService: SecurityService) 
+  {
     this.apiUrl = this.configService.settings.apiUrl + API_ENDPOINT;
   }
 
   getProducts(): Observable<Product[]> {
-    let httpOptions = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + this.securityService.securityObject.bearerToken); // don't forget the ' ' space
-
-    return this.http.get<Product[]>(this.apiUrl, {headers: httpOptions}).pipe(
+    return this.http.get<Product[]>(this.apiUrl).pipe(
       catchError(
         this.handleError<Product[]>('getProducts',
           "Can't retrieve products.", []))
     );
+
+    // let httpOptions = new HttpHeaders()
+    //   .set('Authorization', 'Bearer ' + this.securityService.securityObject.bearerToken); // don't forget the ' ' space
+
+    // return this.http.get<Product[]>(this.apiUrl, {headers: httpOptions}).pipe(
+    //   catchError(
+    //     this.handleError<Product[]>('getProducts',
+    //       "Can't retrieve products.", []))
+    // );
   }
 
   search(search: ProductSearch): Observable<Product[]> {
