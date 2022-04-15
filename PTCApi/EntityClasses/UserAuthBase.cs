@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PTCApi.EntityClasses
 {
@@ -10,11 +11,14 @@ namespace PTCApi.EntityClasses
             UserName = string.Empty;
             BearerToken = string.Empty;
             IsAuthentificated = false;
+            Claims = new List<UserClaim>();
         }
 
         public Guid UserId { get; set; }
         public string UserName { get; set; }
         public string BearerToken { get; set; }
         public bool IsAuthentificated { get; set; }
+
+        public List<UserClaim> Claims {get;set;}
     }
 }

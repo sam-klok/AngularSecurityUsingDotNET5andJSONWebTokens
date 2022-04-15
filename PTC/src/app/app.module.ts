@@ -17,6 +17,7 @@ import { LogMaintenanceComponent } from './shared/logging/log-maintenance.compon
 import { ConfigurationComponent } from './shared/configuration/configuration.component';
 import { LoginComponent } from './public/login.component';
 import { httpInterceptorProviders } from './shared/http-interceptors/interceptor-providers';
+import { HasClaimDirective } from './shared/security/has-claim.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { httpInterceptorProviders } from './shared/http-interceptors/interceptor
     ValidationMessageComponent,
     LogMaintenanceComponent,
     ConfigurationComponent,
-    LoginComponent
+    LoginComponent,
+    HasClaimDirective
   ],
   imports: [
     BrowserModule,

@@ -21,12 +21,14 @@ export class AuthGuard implements CanActivate {
       Object.assign(this.securityService.securityObject, JSON.parse(auth))
     }
 
-    let isAuth = this.securityService.securityObject.isAuthentificated;
-    let isPropTrue = this.securityService.securityObject.getValueOfProperty(this.securityService.securityObject, claimType);
+    let isAuth = this.securityService.securityObject.isAuthentificated
+      && this.securityService.hasClaim(claimType);
+
+    //let isPropTrue = this.securityService.securityObject.getValueOfProperty(this.securityService.securityObject, claimType);
     
     //return isAuth && isPropTrue;
 
-    if (isAuth && isPropTrue){
+    if (isAuth){
       return true;
     }
     else{

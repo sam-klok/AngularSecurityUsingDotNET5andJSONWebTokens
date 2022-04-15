@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AppUser } from 'src/app/security/app-user';
 import { AppUserAuth } from 'src/app/security/app-user-auth';
@@ -21,27 +21,31 @@ export class SecurityService {
 
   securityObject: AppUserAuth = new AppUserAuth();
   apiUrl: string = "";
+  private hasChanged = new BehaviorSubject<number>(0);
+  securityReset = this.hasChanged.asObservable();
 
   constructor(private http: HttpClient,
     private msgService: MessageService,
     private configService: ConfigurationService) { 
       this.apiUrl = this.configService.settings.apiUrl + API_ENDPOINT;
-    }
+  }
 
-    login(entity: AppUser): Observable<AppUserAuth>{
-      delete entity.userId;
+  login(entity: AppUser): Observable<AppUserAuth>{
+    delete entity.userId;
 
-      return this.http.post<AppUserAuth>(this.apiUrl + "login", 
-        entity, httpOptions).pipe(
-          tap(resp => {
-            Object.assign(this.securityObject, resp);
-          }),
-          catchError(
-            this.handleError<AppUserAuth>('login', 
-            "Invalid user name/password", new AppUserAuth())
-          )
+    return this.http.post<AppUserAuth>(this.apiUrl + "login", 
+      entity, httpOptions).pipe(
+        tap(resp => {
+          Object.assign(this.securityObject, resp);
+
+          this.hasChanged.next(0);
+        }),
+        catchError(
+          this.handleError<AppUserAuth>('login', 
+          "Invalid user name/password", new AppUserAuth())
         )
-    }
+      )
+  }
 
   // login(entity: AppUser): Observable<AppUserAuth>{
   //   this.securityObject.userName = entity.userName;
@@ -122,5 +126,57 @@ export class SecurityService {
 
   logout(): void{
     this.securityObject.init();
+    this.hasChanged.next(0);
+  }
+
+  // hasClaim(claimType: any, claimValue?: any):boolean{
+  //   return this.isClaimValid(claimType, claimValue);
+  // }
+
+  hasClaim(claimType: any, claimValue?: any):boolean{
+    let ret: boolean = false;
+
+    if (typeof claimType === "string"){
+      ret = this.isClaimValid(claimType, claimValue);
+    }
+    else{
+      let claims: string[] = claimType;
+      if (claims) {
+        for (let index = 0; index < claims.length; index++){
+          ret = this.isClaimValid(claims[index]);
+
+          if (ret){
+            break;
+          }
+        }
+      }
+    }
+
+    return ret;
+  }
+
+  private isClaimValid(claimType: string, claimValue?:string): boolean {
+    let ret: boolean = false;
+    let auth: AppUserAuth | undefined;
+
+    auth = this.securityObject;
+
+    if(auth){
+      if (claimType.indexOf(":")>=0){
+        let words: string[] = claimType.split(":");
+        claimType = words[0].toLowerCase();
+        claimValue = words[1];
+      }
+      else{
+        claimType = claimType.toLowerCase();
+        claimValue = claimValue ? claimValue : "true";
+      }
+
+      ret = auth
+        .claims
+        .find(c=>c.claimType.toLowerCase() == claimType && c.claimValue == claimValue) != null;
+    }
+
+    return ret;
   }
 }

@@ -67,26 +67,26 @@ namespace PTCApi.ManagerClasses
         }
 
         protected UserAuthBase BuildUserAuthObject(Guid userId, string userName){
-            var claims = new List<UserClaim>();
+            //var claims = new List<UserClaim>();
             Type _authType = _auth.GetType();
 
             _auth.UserId = userId;
             _auth.UserName = userName;
             _auth.IsAuthentificated = true; 
-            claims = GetUserClaims(userId);
+            _auth.Claims = GetUserClaims(userId);
 
-            foreach (var claim in claims)
-            {
-                try
-                {
-                    _authType.GetProperty(claim.ClaimType).SetValue(_auth, Convert.ToBoolean(claim.ClaimValue), null);
-                }
-                catch (System.Exception)
-                {
-                }
-            }
+            // foreach (var claim in claims)
+            // {
+            //     try
+            //     {
+            //         _authType.GetProperty(claim.ClaimType).SetValue(_auth, Convert.ToBoolean(claim.ClaimValue), null);
+            //     }
+            //     catch (System.Exception)
+            //     {
+            //     }
+            // }
 
-            _auth.BearerToken = BuildJwtToken(claims, userName);
+            _auth.BearerToken = BuildJwtToken(_auth.Claims, userName);
 
             return _auth;
         }
